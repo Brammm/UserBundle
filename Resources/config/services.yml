@@ -3,3 +3,9 @@ services:
         class: Brammm\UserBundle\Form\Type\LoginType
         tags:
             - { name: form.type, alias: login }
+
+    kernel.listener.your_listener_name:
+            class: Brammm\UserBundle\EventListener\LoginFormCreatedListener
+            arguments: [@session]
+            tags:
+                - { name: kernel.event_listener, event: controller.form_created, method: onFormCreated }
