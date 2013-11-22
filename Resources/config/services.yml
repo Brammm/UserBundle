@@ -1,0 +1,5 @@
+services:
+    brammm_user.form.factory.login:
+        class: Brammm\UserBundle\Form\Type\LoginType
+        tags:
+            - { name: form.type, alias: login }
