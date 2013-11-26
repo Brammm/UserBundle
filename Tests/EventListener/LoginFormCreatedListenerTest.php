@@ -61,12 +61,10 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
         $session = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Session\Session')
             ->getMock();
         $howMany = null === $requestException ? $this->once() : $this->never();
-        $session->expects($howMany)
-            ->method('get')
-            ->will($this->returnValue($sessionException));
         if (null === $requestException) {
-            $session->expects($this->once())
-                ->method('remove');
+            $session->expects($howMany)
+                ->method('remove')
+                ->will($this->returnValue($sessionException));
         }
 
         $listener = new LoginFormCreatedListener($session);
