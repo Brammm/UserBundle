@@ -22,21 +22,18 @@ class LoginFormCreatedListener
         $request = $event->getRequest();
         $form    = $event->getForm();
 
-        if ('login' === $form->getName()) {
-            // get the login error if there is one
-            if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-                $exception = $request->attributes->get(
-                    SecurityContext::AUTHENTICATION_ERROR
-                );
-            } else {
-                $exception = $this->session->get(SecurityContext::AUTHENTICATION_ERROR);
-                $this->session->remove(SecurityContext::AUTHENTICATION_ERROR);
-            }
-
-            if (null !== $exception) {
-                $error = new FormError($exception->getMessage());
-                $form->addError($error);
-            }
+        if ('login' !== $form->getName()) {
+            return;
         }
+
+        // get the login error if there is one
+        $exception = $request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)
+            ? $exception = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR)
+            : $this->session->remove(SecurityContext::AUTHENTICATION_ERROR);
+
+        if (null !== $exception) {
+            $form->addError(new FormError($exception->getMessage()));
+        }
+
     }
 } 
