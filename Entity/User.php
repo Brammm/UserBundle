@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Table
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Brammm\UserBundle\Entity\Repository\UserRepository")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -28,6 +28,13 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="string")
      */
     protected $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $emailCanonical;
 
     /**
      * @var string
@@ -120,6 +127,25 @@ class User implements AdvancedUserInterface, \Serializable
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $emailCanonical
+     *
+     * @return $this
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical = $emailCanonical;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailCanonical()
+    {
+        return $this->emailCanonical;
     }
 
     /**

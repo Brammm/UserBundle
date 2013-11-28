@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="brammm_user.form.factory.login"
+                 class="Brammm\UserBundle\Form\Type\LoginType">
+            <tag name="form.type" alias="login" />
+        </service>
+        <service id="brammm_user.listener.loginformcreated"
+                 class="Brammm\UserBundle\EventListener\LoginFormCreatedListener">
+            <argument type="service" id="session" />
+            <tag name="kernel.event_listener" event="controller.form_created" method="onFormCreated" />
+        </service>
+        <service id="brammm_user.userprovider"
+                 class="Brammm\UserBundle\Services\UserProvider">
+            <argument type="service" id="brammm_user.usermanager" />
+         </service>
+        <service id="brammm_user.usermanager"
+                 class="Brammm\UserBundle\Services\UserManager">
+            <argument type="service" id="brammm_user.userrepository" />
+            <argument type="service" id="brammm_user.canonicalizer" />
+        </service>
+        <service id="brammm_user.userrepository"
+                 class="Brammm\UserBundle\Entity\Repository\UserRepository"
+                 factory-service="doctrine.orm.entity_manager"
+                 factory-method="getRepository">
+            <argument>BrammmUserBundle:User</argument>
+        </service>
+        <service id="brammm_user.canonicalizer"
+                 class="Brammm\UserBundle\Services\Canonicalizer" />
+    </services>
+</container>
