@@ -177,7 +177,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->salt = $salt;
         return $this;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -210,7 +210,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isAccountNonLocked()
     {
-        return ! $this->isLocked();
+        return !$this->isLocked();
     }
 
     /**
@@ -365,9 +365,11 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function serialize()
     {
-        return serialize([
-            $this->email,
-        ]);
+        return serialize(
+            [
+                $this->email,
+            ]
+        );
     }
 
     /**

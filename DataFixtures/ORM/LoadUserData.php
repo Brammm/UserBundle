@@ -32,7 +32,7 @@ class LoadUserData implements FixtureInterface
 
         $faker = Factory::create();
 
-        for($i = 0; $i < $users; ++$i) {
+        for ($i = 0; $i < $users; ++$i) {
             $user = new User();
             $user
                 ->setFirstName($faker->firstName)
