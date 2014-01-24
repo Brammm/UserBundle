@@ -30,5 +30,10 @@
         </service>
         <service id="brammm_user.canonicalizer"
                  class="Brammm\UserBundle\Services\Canonicalizer" />
+        <service id="brammm_user.canonicalizer_subscriber"
+                 class="Brammm\UserBundle\Services\CanonicalizerSubscriber">
+            <argument type="service" id="brammm_user.canonicalizer" />
+            <tag name="doctrine.event_subscriber" />
+        </service>
     </services>
 </container>
