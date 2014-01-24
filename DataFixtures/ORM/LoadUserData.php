@@ -23,7 +23,7 @@ class LoadUserData implements FixtureInterface
             ->setFirstName('Bram')
             ->setLastName('Van der Sype')
             ->setEmail('bram.vandersype@gmail.com')
-            ->setPassword('test');
+            ->setPlainPassword('test');
 
         $manager->persist($admin);
 
@@ -38,7 +38,7 @@ class LoadUserData implements FixtureInterface
                 ->setFirstName($faker->firstName)
                 ->setLastName($faker->lastName)
                 ->setEmail($faker->email)
-                ->setPassword($faker->word)
+                ->setPlainPassword($faker->word)
                 ->setLocked($faker->boolean(25))
                 ->setEnabled($faker->boolean(25));
 
