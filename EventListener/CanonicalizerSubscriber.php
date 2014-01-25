@@ -1,8 +1,9 @@
 <?php
 
-namespace Brammm\UserBundle\Services;
+namespace Brammm\UserBundle\EventListener;
 
 use Brammm\UserBundle\Entity\User;
+use Brammm\UserBundle\Services\Canonicalizer;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 

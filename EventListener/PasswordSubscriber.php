@@ -1,6 +1,6 @@
 <?php
 
-namespace Brammm\UserBundle\Services;
+namespace Brammm\UserBundle\EventListener;
 
 use Brammm\UserBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;

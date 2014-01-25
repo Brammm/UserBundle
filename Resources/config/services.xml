@@ -29,12 +29,12 @@
 
         <service id="brammm_user.canonicalizer" class="Brammm\UserBundle\Services\Canonicalizer" />
 
-        <service id="brammm_user.canonicalizer_subscriber" class="Brammm\UserBundle\Services\CanonicalizerSubscriber">
+        <service id="brammm_user.canonicalizer_subscriber" class="Brammm\UserBundle\EventListener\CanonicalizerSubscriber">
             <argument type="service" id="brammm_user.canonicalizer" />
             <tag name="doctrine.event_subscriber" />
         </service>
 
-        <service id="brammm_user.password_subscriber" class="Brammm\UserBundle\Services\PasswordSubscriber">
+        <service id="brammm_user.password_subscriber" class="Brammm\UserBundle\EventListener\PasswordSubscriber">
             <argument type="service" id="security.encoder_factory" />
             <tag name="doctrine.event_subscriber" />
         </service>
