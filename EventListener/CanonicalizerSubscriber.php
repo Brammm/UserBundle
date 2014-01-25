@@ -3,16 +3,16 @@
 namespace Brammm\UserBundle\EventListener;
 
 use Brammm\UserBundle\Entity\User;
-use Brammm\UserBundle\Services\Canonicalizer;
+use Brammm\UserBundle\Services\CanonicalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 class CanonicalizerSubscriber implements EventSubscriber
 {
-    /** @var Canonicalizer */
+    /** @var CanonicalizerInterface */
     private $canonicalizer;
 
-    public function __construct(Canonicalizer $canonicalizer)
+    public function __construct(CanonicalizerInterface $canonicalizer)
     {
         $this->canonicalizer = $canonicalizer;
     }

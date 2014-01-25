@@ -2,7 +2,7 @@
 
 namespace Brammm\UserBundle\Services;
 
-class Canonicalizer 
+class Canonicalizer implements CanonicalizerInterface
 {
     public function canonicalize($string)
     {
