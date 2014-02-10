@@ -11,7 +11,8 @@ class CanonicalizerSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testCanonicalize()
     {
         $canonicalizerMock = $this->getMockBuilder('\Brammm\UserBundle\Services\Canonicalizer')
-            ->getMock()
+            ->getMock();
+        $canonicalizerMock
             ->expects($this->once())
             ->method('canonicalize')
             ->with($this->equalTo('foo@bar.com'));
@@ -21,7 +22,8 @@ class CanonicalizerSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $eventMock = $this->getMockBuilder('\Doctrine\Common\Persistence\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMock();
+        $eventMock
             ->expects($this->once())
             ->method('getObject')
             ->will($this->returnValue($user));
