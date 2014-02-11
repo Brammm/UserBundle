@@ -2,34 +2,44 @@
 
 namespace Brammm\UserBundle\Tests\EventListener;
 
-use Brammm\UserBundle\Entity\User;
 use Brammm\UserBundle\EventListener\CanonicalizerSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 class CanonicalizerSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCanonicalize()
+    const EMAIL = 'foo@bar.com';
+
+    /** @var CanonicalizerSubscriber */
+    private $SUT;
+
+    public function setUp()
     {
         $canonicalizerMock = $this->getMockBuilder('\Brammm\UserBundle\Services\Canonicalizer')
             ->getMock();
         $canonicalizerMock
             ->expects($this->once())
             ->method('canonicalize')
-            ->with($this->equalTo('foo@bar.com'));
+            ->with($this->equalTo(self::EMAIL));
 
-        $user = new User();
-        $user->setEmail('foo@bar.com');
+        $this->SUT = new CanonicalizerSubscriber($canonicalizerMock);
+    }
 
-        $eventMock = $this->getMockBuilder('\Doctrine\Common\Persistence\Event\LifecycleEventArgs')
+    public function testCanonicalize()
+    {
+        $event = $this->getMockBuilder('\Doctrine\Common\Persistence\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
-        $eventMock
+
+        $user = $this->getMockBuilder('\Brammm\UserBundle\Entity\User')
+            ->getMock();
+        $user->expects($this->once())
+            ->method('getEmail')
+            ->will($this->returnValue(self::EMAIL));
+
+        $event
             ->expects($this->once())
             ->method('getObject')
             ->will($this->returnValue($user));
 
-        $subscriber = new CanonicalizerSubscriber($canonicalizerMock);
-
-        $subscriber->prePersist($eventMock);
+        $this->SUT->prePersist($event);
     }
 } 

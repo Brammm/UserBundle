@@ -11,7 +11,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     /** @var \Brammm\UserBundle\Services\Canonicalizer|\PHPUnit_Framework_MockObject_MockObject */
     private $canonicalizer;
     /** @var UserManager */
-    private $usermanager;
+    private $SUT;
 
     public function setUp()
     {
@@ -22,7 +22,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->canonicalizer = $this->getMockBuilder('\Brammm\UserBundle\Services\Canonicalizer')
             ->getMock();
 
-        $this->usermanager = new UserManager($this->repo, $this->canonicalizer);
+        $this->SUT = new UserManager($this->repo, $this->canonicalizer);
     }
 
     public function testFindUser()
@@ -36,6 +36,6 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             ->method('canonicalize')
             ->will($this->returnValue('foo'));
 
-        $this->assertEquals('bar', $this->usermanager->findUser('foo'));
+        $this->assertEquals('bar', $this->SUT->findUser('foo'));
     }
 } 

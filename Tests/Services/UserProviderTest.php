@@ -11,7 +11,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
     /** @var \Brammm\UserBundle\Services\UserManager|\PHPUnit_Framework_MockObject_MockObject */
     private $manager;
     /** @var UserProvider */
-    private $provider;
+    private $SUT;
 
     public function setUp()
     {
@@ -19,7 +19,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->provider = new UserProvider($this->manager);
+        $this->SUT = new UserProvider($this->manager);
     }
 
     public function testProvidesAUser()
@@ -31,7 +31,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('foo@example.com'))
             ->will($this->returnValue($user));
 
-        $return = $this->provider->loadUserByUsername('foo@example.com');
+        $return = $this->SUT->loadUserByUsername('foo@example.com');
 
         $this->assertInstanceOf('\Brammm\UserBundle\Entity\User', $return);
     }
@@ -45,7 +45,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->method('findUser')
             ->with($this->equalTo('foo@example.com'));
 
-        $this->provider->loadUserByUsername('foo@example.com');
+        $this->SUT->loadUserByUsername('foo@example.com');
     }
 
     public function testCanRefreshAUser()
@@ -58,7 +58,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('foo@example.com'))
             ->will($this->returnValue($user));
 
-        $this->assertEquals($user, $this->provider->refreshUser($user));
+        $this->assertEquals($user, $this->SUT->refreshUser($user));
     }
 
     /**
@@ -67,17 +67,17 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
     public function testThrowsExceptionWhenItCantRefreshUser()
     {
         $user = new SomeUser();
-        $this->provider->refreshUser($user);
+        $this->SUT->refreshUser($user);
     }
 
     public function testSupportsClass()
     {
-        $this->assertTrue($this->provider->supportsClass('Brammm\UserBundle\Entity\User'));
+        $this->assertTrue($this->SUT->supportsClass('Brammm\UserBundle\Entity\User'));
     }
 
     public function testDoesntSupportClass()
     {
-        $this->assertFalse($this->provider->supportsClass('Brammm\UserBundle\Entity\Foo'));
+        $this->assertFalse($this->SUT->supportsClass('Brammm\UserBundle\Entity\Foo'));
     }
 }
 

@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormError;
 
 class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
 {
-
+    // TODO: Clean up this test
     /**
      * @dataProvider exceptionProvider
      */
