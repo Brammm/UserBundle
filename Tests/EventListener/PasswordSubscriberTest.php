@@ -2,12 +2,12 @@
 
 namespace Brammm\UserBundle\Tests\EventListener;
 
-use Brammm\UserBundle\Entity\User;
 use Brammm\UserBundle\EventListener\PasswordSubscriber;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    const PASSWORD = 'foo';
+
     /** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface */
     private $encoder;
     /** @var \PHPUnit_Framework_MockObject_MockObject|\Doctrine\Common\Persistence\Event\LifecycleEventArgs */
@@ -29,30 +29,33 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testDoesNothingIfNotAUser()
     {
-        $object = new Object();
+        $object = new \StdClass();
         $this->eventWillReturnObject($object);
-
-        $this->ensureEncoderFactoryIsNotCalled();
 
         $this->SUT->prePersist($this->event);
     }
 
     public function testDoesNothingIfNoPassword()
     {
-        $object = new User();
-        $this->eventWillReturnObject($object);
+        $user = $this->getMockBuilder('\Brammm\UserBundle\Entity\User')->getMock();
+        $user->expects($this->once())
+            ->method('getPlainPassword');
 
-        $this->ensureEncoderFactoryIsNotCalled();
+        $this->eventWillReturnObject($user);
 
         $this->SUT->prePersist($this->event);
     }
 
     public function testEncodesPassword()
     {
-        $object = new User();
-        $object->setPlainPassword('foo');
+        $user = $this->getMockBuilder('\Brammm\UserBundle\Entity\User')->getMock();
+        $user->expects($this->any())
+            ->method('getPlainPassword')
+            ->will($this->returnValue(self::PASSWORD));
+        $user->expects($this->once())
+            ->method('setPassword');
 
-        $this->eventWillReturnObject($object);
+        $this->eventWillReturnObject($user);
 
         $this->ensurePasswordIsEncoded();
 
@@ -61,16 +64,15 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function ensurePasswordIsEncoded()
     {
-        $encoder = new Encoder();
+        $encoder = $this->getMockBuilder('\Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+            ->getMock();
+        $encoder->expects($this->once())
+            ->method('encodePassword')
+            ->with($this->equalTo(self::PASSWORD));
+
         $this->encoder->expects($this->once())
             ->method('getEncoder')
             ->will($this->returnValue($encoder));
-    }
-
-    private function ensureEncoderFactoryIsNotCalled()
-    {
-        $this->encoder->expects($this->never())
-            ->method('getEncoder');
     }
 
     private function eventWillReturnObject($object)
@@ -79,17 +81,4 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('getObject')
             ->will($this->returnValue($object));
     }
-}
-
-
-class Object {}
-
-class Encoder implements PasswordEncoderInterface {
-
-    public function encodePassword($raw, $salt)
-    {
-        return 'foo';
-    }
-
-    public function isPasswordValid($encoded, $raw, $salt) {}
 }
