@@ -3,48 +3,102 @@
 namespace Brammm\UserBundle\DataFixtures\ORM;
 
 use Brammm\UserBundle\Entity\User;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 
-class LoadUserData implements FixtureInterface
+class LoadUserData extends AbstractFixture implements FixtureInterface
 {
-    /**
-     * Load data fixtures with the passed EntityManager
-     *
-     * @param ObjectManager $manager
-     */
-    function load(ObjectManager $manager)
+    const USERS = 10;
+
+    private $counter = 0;
+
+    /** @var \Faker\Generator  */
+    private $faker;
+    /** @var ObjectManager */
+    private $manager;
+
+    public function __construct()
     {
+        $this->faker = Factory::create();
+    }
 
-        // Create an admin
-        $admin = new User();
-        $admin
-            ->setFirstName('Bram')
-            ->setLastName('Van der Sype')
-            ->setEmail('bram.vandersype@gmail.com')
-            ->setPlainPassword('test');
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        $this->manager = $manager;
 
-        $manager->persist($admin);
+        $this->createUser(
+            'Bram',
+            'Van der Sype',
+            'bram.vandersype@gmail.com',
+            'test',
+            true,
+            false
+        );
 
         // Generate some users
-        $users = 10;
-
-        $faker = Factory::create();
-
-        for ($i = 0; $i < $users; ++$i) {
-            $user = new User();
-            $user
-                ->setFirstName($faker->firstName)
-                ->setLastName($faker->lastName)
-                ->setEmail($faker->email)
-                ->setPlainPassword($faker->word)
-                ->setLocked($faker->boolean(25))
-                ->setEnabled($faker->boolean(25));
-
-            $manager->persist($user);
+        while($this->roomForMore()) {
+            $this->createUser();
         }
 
         $manager->flush();
+    }
+
+    /**
+     * Creates a user with the given details
+     * If details are not provided, Faker data will be used
+     *
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @param string $plainPassword
+     * @param bool   $enabled
+     * @param bool   $locked
+     */
+    private function createUser(
+        $firstName = null,
+        $lastName = null,
+        $email = null,
+        $plainPassword = null,
+        $enabled = null,
+        $locked = null
+    ) {
+        $user = new User();
+        $user
+            ->setFirstName($firstName ?: $this->faker->firstName)
+            ->setLastName($lastName ?: $this->faker->lastName)
+            ->setEmail($email ?: $this->faker->email)
+            ->setPlainPassword($plainPassword ?: $this->faker->word)
+            ->setEnabled($enabled ?: $this->faker->boolean(90))
+            ->setLocked($locked ?: $this->faker->boolean(20));
+
+        $this->manager->persist($user);
+
+        $this->addReference('user-'.$this->counter, $user);
+        $this->counter++;
+    }
+
+    /**
+     * Counts if there's room for more users
+     *
+     * @return bool
+     */
+    private function roomForMore()
+    {
+        return $this->counter < self::USERS
+            ? true
+            : false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 0; // the order in which fixtures will be loaded
     }
 }
