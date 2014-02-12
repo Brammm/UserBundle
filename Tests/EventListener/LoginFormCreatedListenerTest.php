@@ -48,7 +48,7 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->requestErrorIs($exception);
 
-        $this->formAddErrorIsCalledWith($exception->getMessage());
+        $this->formAddErrorIsCalledWith('foo');
         $this->SUT->onFormCreated($this->event);
     }
 
@@ -61,7 +61,7 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
         $this->requestHasNoError();
         $this->sessionErrorIs($exception);
 
-        $this->formAddErrorIsCalledWith($exception->getMessage());
+        $this->formAddErrorIsCalledWith('bar');
         $this->SUT->onFormCreated($this->event);
     }
 
