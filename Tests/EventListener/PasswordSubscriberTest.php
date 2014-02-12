@@ -27,6 +27,11 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->SUT = new PasswordSubscriber($this->encoder);
     }
 
+    public function testListensToCorrectEvents()
+    {
+        $this->assertEquals(['prePersist', 'preUpdate'], $this->SUT->getSubscribedEvents());
+    }
+
     public function testDoesNothingIfNotAUser()
     {
         $object = new \StdClass();

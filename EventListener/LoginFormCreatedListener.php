@@ -28,7 +28,7 @@ class LoginFormCreatedListener
 
         // get the login error if there is one
         $exception = $request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)
-            ? $exception = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR)
+            ? $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR)
             : $this->session->remove(SecurityContext::AUTHENTICATION_ERROR);
 
         if (null !== $exception) {

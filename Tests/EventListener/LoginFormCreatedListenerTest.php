@@ -4,80 +4,164 @@ namespace Brammm\UserBundle\Tests\EventListener;
 
 use Brammm\UserBundle\EventListener\LoginFormCreatedListener;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
 {
-    // TODO: Clean up this test
-    /**
-     * @dataProvider exceptionProvider
-     */
-    public function testHasErrorMessages($requestException, $sessionException, $message)
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\Form\Form */
+    private $form;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Brammm\CommonBundle\Event\FormCreatedEvent */
+    private $event;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Request */
+    private $request;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Session\Session */
+    private $session;
+    /** @var LoginFormCreatedListener */
+    private $SUT;
+
+    ### TESTS ###
+
+    public function testDoesNothingOnDifferentForm()
     {
-        // Mock the Request with an exception or not
-        $request = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Request')
-            ->enableArgumentCloning()
-            ->getMock();
-        $paramBag = $this->getMockBuilder('\Symfony\Component\HttpFoundation\ParameterBag')
-            ->getMock();
-        $paramBag->expects($this->once())
-            ->method('has')
-            ->will($this->returnValue(($requestException !== null)));
-        // If we have a request error, we get it, otherwise we don't
-        $howMany = null !== $requestException ? $this->once() : $this->never();
-        $paramBag->expects($howMany)
-            ->method('get')
-            ->will($this->returnValue($requestException));
-        $request->attributes = $paramBag;
+        $this->formIsNotLogin();
 
-        // Mock the form
-        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $form->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('login'));
-        // If we have an exception, we want to add it to the form
-        if (null !== $sessionException || null !== $requestException) {
-            $form->expects($this->once())
-                ->method('addError')
-                ->with($this->equalTo(new FormError($message)));
-        } else {
-            $form->expects($this->never())
-                ->method('addError');
-        }
-
-        // Mock event
-        $event = $this->getMockBuilder('\Brammm\CommonBundle\Event\FormCreatedEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $event->expects($this->once())
-            ->method('getRequest')
-            ->will($this->returnValue($request));
-        $event->expects($this->once())
-            ->method('getForm')
-            ->will($this->returnValue($form));
-
-        // Mock the session, possibly with an exception
-        $session = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Session\Session')
-            ->getMock();
-        $howMany = null === $requestException ? $this->once() : $this->never();
-        if (null === $requestException) {
-            $session->expects($howMany)
-                ->method('remove')
-                ->will($this->returnValue($sessionException));
-        }
-
-        $listener = new LoginFormCreatedListener($session);
-
-        $listener->onFormCreated($event);
+        $this->formAddErrorIsNotCalled();
+        $this->SUT->onFormCreated($this->event);
     }
 
-    public function exceptionProvider()
+    public function testDoesNothingWhenNoError()
     {
-        return [
-            [new \Exception('foo'), null, 'foo'],
-            [null, new \Exception('bar'), 'bar'],
-            [null, null, null],
-        ];
+        $this->formIsLogin();
+
+        $this->requestHasNoError();
+        $this->sessionHasNoError();
+
+        $this->formAddErrorIsNotCalled();
+        $this->SUT->onFormCreated($this->event);
+    }
+
+    public function testSetsRequestError()
+    {
+        $exception = new \Exception('foo');
+
+        $this->formIsLogin();
+
+        $this->requestErrorIs($exception);
+
+        $this->formAddErrorIsCalledWith($exception->getMessage());
+        $this->SUT->onFormCreated($this->event);
+    }
+
+    public function testSetsSessionError()
+    {
+        $exception = new \Exception('bar');
+
+        $this->formIsLogin();
+
+        $this->requestHasNoError();
+        $this->sessionErrorIs($exception);
+
+        $this->formAddErrorIsCalledWith($exception->getMessage());
+        $this->SUT->onFormCreated($this->event);
+    }
+
+    ### SETUP ###
+
+    public function setUp()
+    {
+        $this->session = $this->getMock('\Symfony\Component\HttpFoundation\Session\Session');
+
+        $this->SUT = new LoginFormCreatedListener($this->session);
+
+        // Mock the event with request and form
+        $this->request = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Request')
+            ->enableArgumentCloning()
+            ->getMock();
+
+        $this->form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->event = $this->getMockBuilder('\Brammm\CommonBundle\Event\FormCreatedEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->event->expects($this->once())
+            ->method('getRequest')
+            ->will($this->returnValue($this->request));
+        $this->event->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($this->form));
+    }
+
+    ### HELPERS ###
+
+    private function requestHasNoError()
+    {
+        $this->requestErrorIs();
+    }
+
+    private function requestErrorIs(\Exception $exception = null)
+    {
+        $hasError = null === $exception ? false : true;
+
+        $paramBag = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $paramBag->expects($this->once())
+            ->method('has')
+            ->will($this->returnValue($hasError));
+
+        if ($hasError) {
+            $paramBag->expects($this->once())
+                ->method('get')
+                ->will($this->returnValue($exception));
+        } else {
+            $paramBag->expects($this->never())
+                ->method('get');
+        }
+        $this->request->attributes = $paramBag;
+    }
+
+    private function sessionHasNoError()
+    {
+        $this->sessionErrorIs();
+    }
+
+    private function sessionErrorIs(\Exception $exception = null)
+    {
+        $this->session
+            ->expects($this->once())
+            ->method('remove')
+            ->with($this->equalTo(SecurityContext::AUTHENTICATION_ERROR))
+            ->will($this->returnValue($exception));
+    }
+
+    private function formIsNotLogin()
+    {
+        $this->form
+            ->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+    }
+
+    private function formIsLogin()
+    {
+        $this->form
+            ->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('login'));
+    }
+
+    private function formAddErrorIsNotCalled()
+    {
+        $this->form->expects($this->never())
+            ->method('addError');
+    }
+
+    private function formAddErrorIsCalledWith($message)
+    {
+        $error = new FormError($message);
+
+        $this->form->expects($this->once())
+            ->method('addError')
+            ->with($this->equalTo($error));
     }
 }
