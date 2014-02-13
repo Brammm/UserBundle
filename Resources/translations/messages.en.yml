@@ -1,5 +1,6 @@
 form:
-    login: Log In
+    pleaselogin: Please sign in
+    login: Sign In
     email: Email
     password: Password
     remember: Remember me
