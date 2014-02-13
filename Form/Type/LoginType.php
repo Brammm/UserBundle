@@ -17,8 +17,8 @@ class LoginType extends AbstractType
         $builder->add('username');
         $builder->add('password', 'password');
         $builder->add('rememberMe', 'checkbox', [
-                'required' => false,
-            ]);
+            'required' => false,
+        ]);
     }
 
     /**
@@ -27,8 +27,8 @@ class LoginType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-                'data_class' => 'Brammm\UserBundle\Form\Model\Login',
-            ]);
+            'data_class' => 'Brammm\UserBundle\Form\Model\Login',
+        ]);
     }
 
     /**
