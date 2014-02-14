@@ -28,6 +28,7 @@ class LoginType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Brammm\UserBundle\Form\Model\Login',
+            'intention'  => 'authenticate',
         ]);
     }
 
