@@ -16,6 +16,7 @@
         <!-- LISTENERS/SUBSCRIBERS -->
         <service id="brammm_user.listener.loginformcreated" class="Brammm\UserBundle\EventListener\LoginFormCreatedListener">
             <argument type="service" id="session" />
+            <argument type="service" id="translator" />
             <tag name="kernel.event_listener" event="controller.form_created" method="onFormCreated" />
         </service>
 

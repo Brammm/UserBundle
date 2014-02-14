@@ -4,6 +4,7 @@ namespace Brammm\UserBundle\Tests\EventListener;
 
 use Brammm\UserBundle\EventListener\LoginFormCreatedListener;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
@@ -16,6 +17,8 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\HttpFoundation\Session\Session */
     private $session;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\Translation\TranslatorInterface */
+    private $translator;
     /** @var LoginFormCreatedListener */
     private $SUT;
 
@@ -65,13 +68,27 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
         $this->SUT->onFormCreated($this->event);
     }
 
+    public function testTranslatesBadCredentialsError()
+    {
+        $exception = new BadCredentialsException('foo');
+
+        $this->formIsLogin();
+
+        $this->requestErrorIs($exception);
+        $this->exceptionMessageIsTranslated('bar');
+
+        $this->formAddErrorIsCalledWith('bar');
+        $this->SUT->onFormCreated($this->event);
+    }
+
     ### SETUP ###
 
     public function setUp()
     {
-        $this->session = $this->getMock('\Symfony\Component\HttpFoundation\Session\Session');
+        $this->session    = $this->getMock('\Symfony\Component\HttpFoundation\Session\Session');
+        $this->translator = $this->getMock('\Symfony\Component\Translation\TranslatorInterface');
 
-        $this->SUT = new LoginFormCreatedListener($this->session);
+        $this->SUT = new LoginFormCreatedListener($this->session, $this->translator);
 
         // Mock the event with request and form
         $this->request = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Request')
@@ -94,6 +111,14 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     ### HELPERS ###
+
+    private function exceptionMessageIsTranslated($translation)
+    {
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->with($this->equalTo('bad_credentials'))
+            ->will($this->returnValue($translation));
+    }
 
     private function requestHasNoError()
     {
