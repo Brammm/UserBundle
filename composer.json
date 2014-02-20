@@ -1,0 +1,23 @@
+{
+    "name": "brammm/user-bundle",
+    "type": "symfony-bundle",
+    "description": "A Symfony2 bundle which provides user functionality",
+    "keywords": ["user", "bundle", "symfony2"],
+    "homepage":    "https://github.com/Brammm/UserBundle",
+    "license":     "MIT",
+    "authors": [
+        {
+            "name": "Bram Van der Sype",
+            "homepage": "https://github.com/Brammm"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "~2.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Brammm\\UserBundle": ""
+        }
+    },
+    "target-dir": "Brammm/UserBundle"
+}
