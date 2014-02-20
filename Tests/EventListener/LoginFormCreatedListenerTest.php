@@ -91,15 +91,15 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
         $this->SUT = new LoginFormCreatedListener($this->session, $this->translator);
 
         // Mock the event with request and form
-        $this->request = $this->getMockBuilder('\Symfony\Component\HttpFoundation\Request')
+        $this->request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->enableArgumentCloning()
             ->getMock();
 
-        $this->form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+        $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->event = $this->getMockBuilder('\Brammm\CommonBundle\Event\FormCreatedEvent')
+        $this->event = $this->getMockBuilder('Brammm\CommonBundle\Event\FormCreatedEvent')
             ->disableOriginalConstructor()
             ->getMock();
         $this->event->expects($this->once())
@@ -129,7 +129,7 @@ class LoginFormCreatedListenerTest extends \PHPUnit_Framework_TestCase
     {
         $hasError = null === $exception ? false : true;
 
-        $paramBag = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $paramBag = $this->getMock('Symfony\Component\HttpFoundation\ParameterBag');
         $paramBag->expects($this->once())
             ->method('has')
             ->will($this->returnValue($hasError));

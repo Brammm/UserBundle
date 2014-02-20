@@ -15,11 +15,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->repo = $this->getMockBuilder('\Brammm\UserBundle\Entity\Repository\UserRepository')
+        $this->repo = $this->getMockBuilder('Brammm\UserBundle\Entity\Repository\UserRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->canonicalizer = $this->getMockBuilder('\Brammm\UserBundle\Services\Canonicalizer')
+        $this->canonicalizer = $this->getMockBuilder('Brammm\UserBundle\Services\Canonicalizer')
             ->getMock();
 
         $this->SUT = new UserManager($this->repo, $this->canonicalizer);

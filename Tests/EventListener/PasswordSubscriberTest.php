@@ -17,10 +17,10 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->encoder = $this->getMockBuilder('\Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface')
+        $this->encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface')
             ->getMock();
 
-        $this->event = $this->getMockBuilder('\Doctrine\Common\Persistence\Event\LifecycleEventArgs')
+        $this->event = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -42,7 +42,7 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testDoesNothingIfNoPassword()
     {
-        $user = $this->getMockBuilder('\Brammm\UserBundle\Entity\User')->getMock();
+        $user = $this->getMockBuilder('Brammm\UserBundle\Entity\User')->getMock();
         $user->expects($this->once())
             ->method('getPlainPassword');
 
@@ -53,7 +53,7 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testEncodesPassword()
     {
-        $user = $this->getMockBuilder('\Brammm\UserBundle\Entity\User')->getMock();
+        $user = $this->getMockBuilder('Brammm\UserBundle\Entity\User')->getMock();
         $user->expects($this->any())
             ->method('getPlainPassword')
             ->will($this->returnValue(self::PASSWORD));
@@ -69,7 +69,7 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function ensurePasswordIsEncoded()
     {
-        $encoder = $this->getMockBuilder('\Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
             ->getMock();
         $encoder->expects($this->once())
             ->method('encodePassword')

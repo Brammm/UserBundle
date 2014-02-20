@@ -15,7 +15,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->manager = $this->getMockBuilder('\Brammm\UserBundle\Services\UserManager')
+        $this->manager = $this->getMockBuilder('Brammm\UserBundle\Services\UserManager')
             ->disableOriginalConstructor()
             ->getMock();
 
