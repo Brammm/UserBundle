@@ -41,7 +41,7 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        return $this->manager->findUser($user->getEmail());
+        return $this->manager->findUserBy(['id' => $user->getId()]);
     }
 
     /**
