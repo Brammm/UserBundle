@@ -32,10 +32,10 @@ class LoadUserData extends AbstractFixture implements FixtureInterface
         $this->manager = $manager;
 
         $this->createUser(
-            'Bram',
-            'Van der Sype',
-            'bram.vandersype@gmail.com',
-            'test',
+            'John',
+            'Doe',
+            'admin@example.com',
+            'admin',
             true,
             false
         );
