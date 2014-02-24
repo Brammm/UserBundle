@@ -51,11 +51,11 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
     public function testCanRefreshAUser()
     {
         $user = new User();
-        $user->setEmail('foo@example.com');
+        $user->setId(1);
 
         $this->manager->expects($this->once())
-            ->method('findUser')
-            ->with($this->equalTo('foo@example.com'))
+            ->method('findUserBy')
+            ->with($this->equalTo(['id' => 1]))
             ->will($this->returnValue($user));
 
         $this->assertEquals($user, $this->SUT->refreshUser($user));
