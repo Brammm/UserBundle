@@ -10,3 +10,5 @@ A User bundle that does what I want it do.
 At the moment, this bundle doesn't do much. It provides a basic User entity that will allow users to log in via email (no usernames!).
 
 It has a data fixture to generate some default users (as well as the default 'admin@example.com' admin).
+
+A login form is also included.
