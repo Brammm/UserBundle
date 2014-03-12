@@ -16,6 +16,8 @@ class Login
         if (null !== $username) {
             $this->setUsername($username);
         }
+
+        $this->setRememberMe(true);
     }
 
     /**
