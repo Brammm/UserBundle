@@ -13,6 +13,10 @@
             <tag name="form.type" alias="login" />
         </service>
 
+        <service id="brammm_user.form.factory.register" class="Brammm\UserBundle\Form\Type\RegisterType">
+            <tag name="form.type" alias="register" />
+        </service>
+
         <!-- LISTENERS/SUBSCRIBERS -->
         <service id="brammm_user.listener.loginformcreated" class="Brammm\UserBundle\EventListener\LoginFormCreatedListener">
             <argument type="service" id="session" />
