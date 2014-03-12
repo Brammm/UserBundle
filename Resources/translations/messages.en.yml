@@ -1,1 +1,14 @@
-bad_credentials: Your email or password are incorrect   # FIXME
+form:
+    login:
+        login: 'Sign In'
+        email: Email
+        emailplease: 'Please enter email address'
+        password: Password
+        passplease: 'Enter your password'
+        forgotpass: 'Forgot your password'
+        pleaselogin: 'Please sign in'
+        remember: 'Remember me'
+        orsigninwith: 'Or sign in using'
+        register: Register
+
+bad_credentials: 'Your email or password are incorrect'
