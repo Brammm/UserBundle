@@ -24,7 +24,7 @@ class LoginFormCreatedListener
 
     public function onFormCreated(FormCreatedEvent $event)
     {
-        $request = $event->getRequest();
+        $request = $event->getRequestStack()->getMasterRequest();
         $form    = $event->getForm();
 
         if ('login' !== $form->getName()) {
