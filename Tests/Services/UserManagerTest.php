@@ -6,6 +6,8 @@ use Brammm\UserBundle\Services\UserManager;
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var \Doctrine\Orm\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+    private $em;
     /** @var \Brammm\UserBundle\Entity\Repository\UserRepository|\PHPUnit_Framework_MockObject_MockObject */
     private $repo;
     /** @var \Brammm\UserBundle\Services\Canonicalizer|\PHPUnit_Framework_MockObject_MockObject */
@@ -15,6 +17,8 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $this->em = $this->getMockBuilder('Doctrine\Orm\EntityManagerInterface')->getMock();
+
         $this->repo = $this->getMockBuilder('Brammm\UserBundle\Entity\Repository\UserRepository')
             ->disableOriginalConstructor()
             ->getMock();
@@ -22,7 +26,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->canonicalizer = $this->getMockBuilder('Brammm\UserBundle\Services\Canonicalizer')
             ->getMock();
 
-        $this->SUT = new UserManager($this->repo, $this->canonicalizer);
+        $this->SUT = new UserManager($this->em, $this->repo, $this->canonicalizer);
     }
 
     public function testFindUser()
