@@ -17,7 +17,6 @@ class PasswordSubscriber implements EventSubscriber
         $this->encoderFactory = $encoderFactory;
     }
 
-
     /**
      * Returns an array of events this subscriber wants to listen to.
      *

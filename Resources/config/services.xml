@@ -35,6 +35,7 @@
         </service>
 
         <service id="brammm_user.usermanager" class="Brammm\UserBundle\Services\UserManager">
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="brammm_user.repository.user" />
             <argument type="service" id="brammm_user.canonicalizer" />
         </service>

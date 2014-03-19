@@ -17,7 +17,7 @@
                 </option>
             </constraint>
         </property>
-        <property name="password">
+        <property name="plainPassword">
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>register</value>

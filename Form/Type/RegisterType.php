@@ -16,7 +16,7 @@ class RegisterType extends AbstractType
         $builder->add('email', 'email', [
             'label' => 'email'
         ]);
-        $builder->add('password', 'repeated', [
+        $builder->add('plainPassword', 'repeated', [
             'type' => 'password',
             'invalid_message' => 'match_passwords',
             'first_options' => [

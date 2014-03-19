@@ -1,8 +1,10 @@
-bad_credentials: 'Your email or password are incorrect'
-match_passwords: 'Passwords must match'
+bad_credentials: Your email or password are incorrect
+match_passwords: Passwords must match
 
 email: Email
 password: Password
 password_confirm: Confirm Password
 first_name: First Name
 last_name: Last Name
+
+registration_complete: Thanks for registering!
