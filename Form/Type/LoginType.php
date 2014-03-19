@@ -14,8 +14,12 @@ class LoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('username');
-        $builder->add('password', 'password');
+        $builder->add('username', 'email', [
+            'label' => 'email',
+        ]);
+        $builder->add('password', 'password', [
+            'label' => 'password',
+        ]);
         $builder->add('rememberMe', 'checkbox', [
             'required' => false,
         ]);

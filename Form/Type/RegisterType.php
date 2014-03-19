@@ -13,12 +13,25 @@ class RegisterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email');
+        $builder->add('email', 'email', [
+            'label' => 'email'
+        ]);
         $builder->add('password', 'repeated', [
             'type' => 'password',
+            'invalid_message' => 'match_passwords',
+            'first_options' => [
+                'label' => 'password',
+            ],
+            'second_options' => [
+                'label' => 'password_confirm',
+            ],
         ]);
-        $builder->add('firstName');
-        $builder->add('lastName');
+        $builder->add('firstName', 'text', [
+            'label' => 'first_name',
+        ]);
+        $builder->add('lastName', 'text', [
+            'label' => 'last_name',
+        ]);
     }
 
     /**
@@ -28,6 +41,8 @@ class RegisterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Brammm\UserBundle\Entity\User',
+            'validation_groups' => array('register'),
+            'intention' => 'register',
         ]);
     }
     /**
