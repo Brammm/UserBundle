@@ -318,7 +318,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function isEnabled()
     {
-        return true;
+        return $this->enabled;
     }
 
     /**
@@ -382,8 +382,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function eraseCredentials()
     {
-        $this->setPassword('');
-
+        $this->plainPassword = null;
         return $this;
     }
 
