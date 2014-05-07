@@ -22,10 +22,10 @@
             <tag name="kernel.event_listener" event="controller.form_created" method="onFormCreated" />
         </service>
 
-        <!--<service id="brammm_user.password_subscriber" class="Brammm\UserBundle\EventListener\PasswordSubscriber">-->
-            <!--<argument type="service" id="security.encoder_factory" />-->
-            <!--<tag name="doctrine.event_subscriber" />-->
-        <!--</service>-->
+        <service id="brammm_user.password_subscriber" class="Brammm\UserBundle\EventListener\PasswordSubscriber">
+            <argument type="service" id="security.encoder_factory" />
+            <tag name="doctrine.event_subscriber" />
+        </service>
 
         <!-- USER STUFF -->
         <service id="brammm_user.userprovider" class="%brammm_user.userprovider.class%">
