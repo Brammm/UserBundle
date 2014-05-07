@@ -12,9 +12,25 @@ interface SimpleUserInterface
     public function getUsername();
 
     /**
-     * Retreives a user's password
+     * Set a user's hashed password
+     *
+     * @param string $password
+     *
+     * @return $this
+     */
+    public function setPassword($password);
+
+    /**
+     * Retreives a user's hashed password
      *
      * @return string
      */
     public function getPassword();
+
+    /**
+     * Gets a user's plain password (non-hashed)
+     *
+     * @return string
+     */
+    public function getPlainPassword();
 } 

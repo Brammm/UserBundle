@@ -7,7 +7,6 @@
         <parameter key="brammm_user.form.factory.login.class">Brammm\UserBundle\Form\Type\LoginType</parameter>
         <parameter key="brammm_user.listener.loginformcreated.class">Brammm\UserBundle\EventListener\LoginFormCreatedListener</parameter>
         <parameter key="brammm_user.userprovider.class">Brammm\UserBundle\Security\UserProvider</parameter>
-        <parameter key="brammm_user.canonicalizer.class">Brammm\UserBundle\Util\Canonicalizer</parameter>
     </parameters>
 
     <services>
@@ -32,13 +31,6 @@
         <service id="brammm_user.userprovider" class="%brammm_user.userprovider.class%">
             <argument type="service" id="brammm_user.user_repository" />
         </service>
-
-        <service id="brammm_user.canonicalizer" class="%brammm_user.canonicalizer.class%" />
-
-        <!--<service id="brammm_user.canonicalizer_subscriber" class="Brammm\UserBundle\EventListener\CanonicalizerSubscriber">-->
-            <!--<argument type="service" id="brammm_user.canonicalizer" />-->
-            <!--<tag name="doctrine.event_subscriber" />-->
-        <!--</service>-->
 
     </services>
 </container>
