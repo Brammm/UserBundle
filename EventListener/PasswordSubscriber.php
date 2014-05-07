@@ -2,7 +2,7 @@
 
 namespace Brammm\UserBundle\EventListener;
 
-use Brammm\UserBundle\Entity\User;
+use Brammm\UserBundle\Model\SimpleUserInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -55,7 +55,7 @@ class PasswordSubscriber implements EventSubscriber
     {
         $user = $event->getObject();
 
-        if (!$user instanceof User) {
+        if (!$user instanceof SimpleUserInterface) {
             return;
         }
 
@@ -65,7 +65,7 @@ class PasswordSubscriber implements EventSubscriber
 
         $encoder = $this->encoderFactory->getEncoder($user);
         $user->setPassword(
-            $encoder->encodePassword($user->getPlainPassword(), $user->getSalt())
+            $encoder->encodePassword($user->getPlainPassword(), null)
         );
     }
 }
