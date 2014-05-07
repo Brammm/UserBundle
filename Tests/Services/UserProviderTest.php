@@ -2,47 +2,48 @@
 
 namespace Brammm\UserBundle\Tests\Services;
 
-use Brammm\UserBundle\Entity\User;
-use Brammm\UserBundle\Services\UserProvider;
+use Brammm\UserBundle\Security\UserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProviderTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \Brammm\UserBundle\Services\UserManager|\PHPUnit_Framework_MockObject_MockObject */
-    private $manager;
+    /** @var \Brammm\UserBundle\Security\UserRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject */
+    private $repo;
     /** @var UserProvider */
     private $SUT;
 
     public function setUp()
     {
-        $this->manager = $this->getMockBuilder('Brammm\UserBundle\Services\UserManager')
-            ->disableOriginalConstructor()
+        $this->repo = $this->getMockBuilder('Brammm\UserBundle\Security\UserRepositoryInterface')
             ->getMock();
 
-        $this->SUT = new UserProvider($this->manager);
+        $this->SUT = new UserProvider($this->repo);
     }
 
     public function testProvidesAUser()
     {
-        $user = new User();
+        $userInterface = $this->getMockBuilder('Brammm\UserBundle\Model\SimpleUserInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->manager->expects($this->once())
-            ->method('findUser')
+        $this->repo->expects($this->once())
+            ->method('findOneByUsername')
             ->with($this->equalTo('foo@example.com'))
-            ->will($this->returnValue($user));
+            ->will($this->returnValue($userInterface));
 
-        $return = $this->SUT->loadUserByUsername('foo@example.com');
-
-        $this->assertInstanceOf('\Brammm\UserBundle\Entity\User', $return);
+        $this->assertInstanceOf(
+            'Brammm\UserBundle\Model\User',
+            $this->SUT->loadUserByUsername('foo@example.com')
+        );
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      */
     public function testThrowsAnExceptionWhenItCantFindAUser()
     {
-        $this->manager->expects($this->once())
-            ->method('findUser')
+        $this->repo->expects($this->once())
+            ->method('findOneByUsername')
             ->with($this->equalTo('foo@example.com'));
 
         $this->SUT->loadUserByUsername('foo@example.com');
@@ -50,15 +51,23 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testCanRefreshAUser()
     {
-        $user = new User();
-        $user->setId(1);
+        $user = $this->getMockBuilder('Brammm\UserBundle\Model\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user->expects($this->once())
+            ->method('getUsername')
+            ->will($this->returnValue('foo'));
 
-        $this->manager->expects($this->once())
-            ->method('findUserBy')
-            ->with($this->equalTo(['id' => 1]))
-            ->will($this->returnValue($user));
+        $userEntity = $this->getMockBuilder('Brammm\UserBundle\Model\SimpleUserInterface')
+            ->getMock();
+        $this->repo->expects($this->once())
+            ->method('findOneByUsername')
+            ->will($this->returnValue($userEntity));
 
-        $this->assertEquals($user, $this->SUT->refreshUser($user));
+        $this->assertInstanceOf(
+            'Brammm\UserBundle\Model\User',
+            $this->SUT->refreshUser($user)
+        );
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Brammm\UserBundle\Services;
+namespace Brammm\UserBundle\Util;
 
 interface CanonicalizerInterface
 {

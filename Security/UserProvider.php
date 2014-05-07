@@ -1,8 +1,8 @@
 <?php
 
-namespace Brammm\UserBundle\Services;
+namespace Brammm\UserBundle\Security;
 
-use Brammm\UserBundle\Entity\User;
+use Brammm\UserBundle\Model\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -10,12 +10,14 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    /** @var UserManager */
-    protected $manager;
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $repo;
 
-    function __construct(UserManager $manager)
+    public function __construct(UserRepositoryInterface $repo)
     {
-        $this->manager = $manager;
+        $this->repo = $repo;
     }
 
     /**
@@ -23,13 +25,13 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->manager->findUser($username);
+        $user = $this->repo->findOneByUsername($username);
 
         if (null === $user) {
             throw new UsernameNotFoundException;
         }
 
-        return $user;
+        return new User($user);
     }
 
     /**
@@ -41,7 +43,7 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        return $this->manager->findUserBy(['id' => $user->getId()]);
+        return $this->loadUserByUsername($user->getUsername());
     }
 
     /**

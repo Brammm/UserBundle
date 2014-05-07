@@ -2,7 +2,7 @@
 
 namespace Brammm\UserBundle\Tests\Services;
 
-use Brammm\UserBundle\Services\Canonicalizer;
+use Brammm\UserBundle\Util\Canonicalizer;
 
 class CanonicalizerTest extends \PHPUnit_Framework_TestCase
 {
