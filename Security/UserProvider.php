@@ -51,7 +51,7 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return $class === 'Brammm\UserBundle\Entity\User';
+        return $class === 'Brammm\UserBundle\Model\User';
     }
 
 } 
