@@ -30,7 +30,7 @@
 
         <!-- USER STUFF -->
         <service id="brammm_user.userprovider" class="%brammm_user.userprovider.class%">
-            <argument type="service" id="brammm_user.usermanager" />
+            <argument type="service" id="brammm_user.user_repository" />
         </service>
 
         <service id="brammm_user.canonicalizer" class="%brammm_user.canonicalizer.class%" />
