@@ -21,7 +21,6 @@
         "symfony/framework-bundle": "~2.1",
         "symfony/form": "~2.1",
         "symfony/security-bundle": "~2.1",
-        "doctrine/orm": "~2.2,>=2.2.3",
         "brammm/common-bundle": "dev-master"
     },
     "require-dev" : {
