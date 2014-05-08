@@ -81,12 +81,12 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportsClass()
     {
-        $this->assertTrue($this->SUT->supportsClass('Brammm\UserBundle\Entity\User'));
+        $this->assertTrue($this->SUT->supportsClass('Brammm\UserBundle\Model\User'));
     }
 
     public function testDoesntSupportClass()
     {
-        $this->assertFalse($this->SUT->supportsClass('Brammm\UserBundle\Entity\Foo'));
+        $this->assertFalse($this->SUT->supportsClass('Brammm\UserBundle\Model\Foo'));
     }
 }
 
