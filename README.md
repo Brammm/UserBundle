@@ -42,7 +42,7 @@ $bundles = [
 ### Configuration
 
 This bundle requires some configuration. Firstly, configure your user repository service (*For more information about the user repository service, see Usage*).
-```json 
+```yaml
 #config.yml
 brammm_user:
     user_repository: <user_repository_service>
