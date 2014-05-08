@@ -176,4 +176,4 @@ Go right ahead, submit a PR. I'm open to suggestions.
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/brammm/user-bundle/blob/master/Resources/meta/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/Brammm/UserBundle/blob/master/Resources/meta/LICENSE) for more information.
