@@ -50,7 +50,7 @@ brammm_user:
 
 Next, declare the `brammm_user.userprovider` service as your provider, configure an encoder for the `Brammm\User\Model\User` class and enable the provider for one of your firewalls.
 
-```json
+```yaml
 #security.yml
 security:
     providers:
@@ -69,7 +69,7 @@ security:
 
 If you want to use the provider `LoginType` form, you also have to configure the necessary parameters for your firewall.
 
-```json 
+```yaml
 #security.yml
 firewalls:
     main:
