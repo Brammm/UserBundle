@@ -128,6 +128,17 @@ interface UserRepositoryInterface
 }
 ```
 
+You will need to declare this repository as a service to configure it. Simply create the service by using the EntityManager as the factory.
+
+```xml
+<service id="acme_demo.repository.user"
+         class="Acme\DemoBundle\Repository\UserRepository"
+         factory-service="doctrine.orm.entity_manager"
+         factory-method="getRepository">
+    <argument>AcmeDemoBundle:User</argument>
+</service>
+```
+
 ### Password encoding
 
 The bundle by default registers a Doctrine Event Subscriber that will check any entity implementing `SimpleUserInterface`. If `getPlainPassword()` returns a non-null value, the Event Subscriber will encode the plainPassword using the configured encoder.
