@@ -149,6 +149,8 @@ If you wish to manually encode passwords for whatever reason, you can use the `b
 $password = $this->get('brammm_user.encoder')->encodePassword($plainPassword, $salt);
 ```
 
+*If you do not wish to use the `brammm_user.encoder` service, you can still use the `security.encoder_factory`, but you might need to declare an encoder in `security.yml` for your User entity.*
+
 ### Login Form
 
 By default, the Security component is completely decoupled from the Form component, that's a shame. This bundle tries to rectify that. 
