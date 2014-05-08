@@ -3,7 +3,9 @@ Brammm\UserBundle
 
 [![Build Status](https://travis-ci.org/Brammm/UserBundle.png?branch=master)](https://travis-ci.org/Brammm/UserBundle)
 
-A light-weight UserBundle that separates the persisted user entity from the user entity. 
+A light-weight UserBundle that separates the persisted user entity from the user entity. This bundle is not some solve-all solution. It tries to do very little, but what it does, it tries to do well.
+
+**Caution:** This bundle is fairly new and underdevelopped. For example, it does not support user roles at the moment. This will be implemented in later versions. 
 
 ## Install
 
