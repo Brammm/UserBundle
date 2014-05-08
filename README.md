@@ -114,7 +114,7 @@ namespace Acme\DemoBundle\Repository;
 
 use Brammm\UserBundle\Security\UserRepositoryInterface;
 
-interface UserRepositoryInterface
+class UserRepository implements UserRepositoryInterface
 {
     /**
      * Looks for a SimpleUserInterface user
