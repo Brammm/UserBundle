@@ -24,7 +24,7 @@ Via Composer (the bundles aren't added to Packagist just yet, so you have to add
         }
     ],
     "require": {
-        "league/color-extractor": "~0.1"
+        "brammm/user-bundle": "dev-master"
     }
 }
 ```
