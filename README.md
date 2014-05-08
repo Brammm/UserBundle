@@ -10,17 +10,17 @@ A light-weight UserBundle that separates the persisted user entity from the user
 Via Composer (the bundles aren't added to Packagist just yet, so you have to add the repositories manually):
 
 ```json
-"repositories": [
-    {
-        "url": "https://github.com/Brammm/CommonBundle.git",
-        "type": "git"
-    },
-    {
-        "url": "https://github.com/Brammm/UserBundle.git",
-        "type": "git"
-    }
-],
 {
+    "repositories": [
+        {
+            "url": "https://github.com/Brammm/CommonBundle.git",
+            "type": "git"
+        },
+        {
+            "url": "https://github.com/Brammm/UserBundle.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "league/color-extractor": "~0.1"
     }
