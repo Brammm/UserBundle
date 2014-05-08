@@ -1,6 +1,6 @@
 <?php
 
-namespace Brammm\UserBundle\Tests\Services;
+namespace Brammm\UserBundle\Tests\Security;
 
 use Brammm\UserBundle\Security\UserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;

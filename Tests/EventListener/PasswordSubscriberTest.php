@@ -17,7 +17,7 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface')
+        $this->encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
             ->getMock();
 
         $this->event = $this->getMockBuilder('Doctrine\Common\Persistence\Event\LifecycleEventArgs')
@@ -69,15 +69,9 @@ class PasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function ensurePasswordIsEncoded()
     {
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
-            ->getMock();
-        $encoder->expects($this->once())
+        $this->encoder->expects($this->once())
             ->method('encodePassword')
             ->with($this->equalTo(self::PASSWORD));
-
-        $this->encoder->expects($this->once())
-            ->method('getEncoder')
-            ->will($this->returnValue($encoder));
     }
 
     private function eventWillReturnObject($object)
